@@ -79,7 +79,8 @@ CallManage.getInstance().handleTarget(bean);
 
 
 //新建耗时返回的CallTarget
-public class CallTarget1 extends CallTimeHandTarget {
+
+public class CallTarget extends CallTimeHandTarget {
 
     @Override
     public void delayProcessing(CallParticipationBean bean, final CallTimeHandlerListener listener) {
@@ -104,16 +105,17 @@ public class CallTarget1 extends CallTimeHandTarget {
 
     @Override
     public String getTag() {
-        return "CallTarget1";//设置tag
+        return "CallTimeHandTarget";//设置tag
     }
 }
 
 //新建直接返回的CallTarget
-public class CallTarget2 extends CallImmediatelyHandlerTarget {
+
+public class CallTarget extends CallImmediatelyHandlerTarget {
 
     @Override
     public String getTag() {
-        return "CallTarget2";//设置tag
+        return "CallImmediatelyHandlerTarget";//设置tag
     }
 
     @Override
