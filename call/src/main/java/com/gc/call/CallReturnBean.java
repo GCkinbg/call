@@ -1,8 +1,9 @@
 package com.gc.call;
 
+//call后的返回数据bean
 public class CallReturnBean {
-    private String msg;
-    private String returnJson;
+    private String msg; //错误提示
+    private String returnJson;//返回结果
     private int code = CallConstant.CODE_SUCCESS;//返回 1：表示成功,默认值，2：没有找到目标  其他表示失败，可自定义
 
     public String getMsg() {

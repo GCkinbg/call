@@ -5,15 +5,21 @@ import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
+
 //call的入参
 public class CallParticipationBean {
 
-    private Context context;
+    private WeakReference<Context> context;
     private String tag; //目标
     private JSONObject parameter; //入参
-    private CallReturnListener listener; //回调
-    private int looper=CallConstant.LOOPER_MAIN;//是否在主线处理,为true在主线程处理
+    private CallReturnListener callReturnListener; //回调
+    private int looper = CallConstant.LOOPER_MAIN;//是否在主线处理,为true在主线程处理
 
+
+    public CallParticipationBean(String tag) {
+        this.tag = tag;
+    }
 
     public int getLooper() {
         return looper;
@@ -24,11 +30,14 @@ public class CallParticipationBean {
     }
 
     public Context getContext() {
-        return context;
+        if (context != null) {
+            return context.get();
+        }
+        return null;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    public void setContext(Context c) {
+        context = new WeakReference<>(c);
     }
 
     public String getTag() {
@@ -39,12 +48,12 @@ public class CallParticipationBean {
         this.tag = tag;
     }
 
-    public CallReturnListener getListener() {
-        return listener;
+    public CallReturnListener getCallReturnListener() {
+        return callReturnListener;
     }
 
-    public void setListener(CallReturnListener listener) {
-        this.listener = listener;
+    public void setCallReturnListener(CallReturnListener callReturnListener) {
+        this.callReturnListener = callReturnListener;
     }
 
     public JSONObject getParameter() {
@@ -55,12 +64,12 @@ public class CallParticipationBean {
         this.parameter = parameter;
     }
 
-    public void addParameter(String key,String value){
-        if (parameter==null){
-            parameter=new JSONObject();
+    public void addParameter(String key, String value) {
+        if (parameter == null) {
+            parameter = new JSONObject();
         }
         try {
-            parameter.put(key,value);
+            parameter.put(key, value);
         } catch (JSONException e) {
             e.printStackTrace();
         }

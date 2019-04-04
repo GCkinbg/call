@@ -1,1 +1,1 @@
-include ':app', ':call'
+include ':app', ':call', ':module'

@@ -8,9 +8,10 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class CallManage {
 
-    private String TAG = "CallManage";
+    private static String TAG = "CallManage";
 
     private Map<String, CallTarget> map = new HashMap<>();
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -24,6 +25,7 @@ public class CallManage {
         return callManage;
     }
 
+    //添加Target
     public void addTarget(CallTarget callTarget) {
         map.put(callTarget.getTag(), callTarget);
     }
@@ -33,11 +35,11 @@ public class CallManage {
         Log.i(TAG, "handleTarget:" + bean.getTag());
         CallTarget callTarget = map.get(bean.getTag());
         if (callTarget == null) {
-            if (bean.getListener() != null) {
+            if (bean.getCallReturnListener() != null) {
                 CallReturnBean callReturn = new CallReturnBean();
                 callReturn.setMsg("没有找到对应的CallTarget");
                 callReturn.setCode(CallConstant.CODE_NO_TARGET);
-                bean.getListener().onReturn(callReturn);
+                bean.getCallReturnListener().onReturn(callReturn);
             }
         } else {
             if (callTarget instanceof CallImmediatelyHandlerTarget) {
@@ -57,8 +59,8 @@ public class CallManage {
                     target.delayProcessing(bean, new CallTimeHandlerListener() {
                         @Override
                         public void timeHandler(CallReturnBean c) {
-                            if (bean.getListener() != null) {
-                                bean.getListener().onReturn(c);
+                            if (bean.getCallReturnListener() != null) {
+                                bean.getCallReturnListener().onReturn(c);
                             }
                         }
                     });
@@ -69,8 +71,8 @@ public class CallManage {
                             target.delayProcessing(bean, new CallTimeHandlerListener() {
                                 @Override
                                 public void timeHandler(CallReturnBean c) {
-                                    if (bean.getListener() != null) {
-                                        bean.getListener().onReturn(c);
+                                    if (bean.getCallReturnListener() != null) {
+                                        bean.getCallReturnListener().onReturn(c);
                                     }
                                 }
                             });
@@ -89,8 +91,8 @@ public class CallManage {
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (bean.getListener() != null) {
-                                                bean.getListener().onReturn(c);
+                                            if (bean.getCallReturnListener() != null) {
+                                                bean.getCallReturnListener().onReturn(c);
                                             }
                                         }
                                     });
@@ -115,16 +117,16 @@ public class CallManage {
             public void run() {
                 if (bean.getLooper() == CallConstant.LOOPER_MAIN) {
                     CallReturnBean c = target.onHandle(bean);
-                    if (bean.getListener() != null) {
-                        bean.getListener().onReturn(c);
+                    if (bean.getCallReturnListener() != null) {
+                        bean.getCallReturnListener().onReturn(c);
                     }
                 } else if (bean.getLooper() == CallConstant.LOOPER_NO_MAIN) {
                     AsyncTask asyncTask = new AsyncTask() {
                         @Override
                         protected Object doInBackground(Object[] objects) {
                             CallReturnBean c = target.onHandle(bean);
-                            if (bean.getListener() != null) {
-                                bean.getListener().onReturn(c);
+                            if (bean.getCallReturnListener() != null) {
+                                bean.getCallReturnListener().onReturn(c);
                             }
                             return null;
                         }
@@ -141,8 +143,8 @@ public class CallManage {
                         @Override
                         protected void onPostExecute(Object o) {
                             super.onPostExecute(o);
-                            if (bean.getListener() != null) {
-                                bean.getListener().onReturn((CallReturnBean) o);
+                            if (bean.getCallReturnListener() != null) {
+                                bean.getCallReturnListener().onReturn((CallReturnBean) o);
                             }
                         }
                     };
