@@ -1,5 +1,14 @@
 # call
 轻量化组件化通信工具
+1.0.0版本功能
+modeule与modeule之间的通信
+发起通信后，直接返回
+发起通信后，耗时返回
+在主线程运行
+在非主线程运行
+在非主线程运行，但在主线程返回数据
+
+
 
 在Application的onCreate方法中初始化CallManage，并且把对应的CallTarget添加进入队列,调用addTarget方法时要保证getTag返回的字符串不能重复
 public class MyApplication extends Application {
@@ -90,3 +99,7 @@ public class CallTarget2 extends CallImmediatelyHandlerTarget {
         return returnBean;
     }
 }
+
+作者
+QQ:2190151331
+有任何建议请QQ联系
