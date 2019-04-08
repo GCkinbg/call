@@ -17,6 +17,22 @@ modeule与modeule之间的通信
 在非主线程运行，但在主线程返回数据
 
 
+引用方法
+在项目最外层的build.gradle中添加
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url"https://raw.githubusercontent.com/GCkinbg/repos/master"
+        }
+    }
+}
+
+在Module中添加
+ api 'com.gc:call:1.0.0'
+
+
 
 
 在Application的onCreate方法中初始化CallManage，并且把对应的CallTarget添加进入队列,调用addTarget方法时要保证getTag返回的字符串不能重复
